@@ -1,86 +1,131 @@
 .gallery {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  color: rgb(255,255,255);
-  background: linear-gradient(
-    to bottom,
-    transparent,
-    rgb(255, 255, 255))
-  rgb(214, 219, 220);
-}
-
-.horizontalCards {
-  display: flex;
-}
-
-.verticalCards {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  padding: 100px ;
-}
-
-.card {
-  margin: 10px;
-  animation-name: flyIn;
-  animation-duration: 0.5s;
-  position: relative;
-  perspective: 1000px;
-  cursor: pointer;
-}
-
-.cardInner {
-  width: 100%;
-  height: 100%;
-  transform-style: preserve-3d;
-  transition: transform 0.5s;
-}
-
-.cardFront,
-.cardBack {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  backface-visibility: hidden;
-}
-
-.cardFront {
-  transform: rotateY(0deg);
-}
-
-.cardBack {
-  transform: rotateY(180deg);
-  background-color: #ddd;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.flipped .cardInner {
-  transform: rotateY(180deg);
-}
-
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    height: 100vh;
+  }
+  
+  .cardContainer {
+    position: relative;
+    display: flex;
+    width: 100%; /* 카드의 너비 설정 */
+    height: 50%; /* 카드의 높이 설정 */
+  }
+  
+  .card {
+    position: absolute;
+    top: -300px; /* 카드가 처음에 위치하는 Y 좌표 */
+    left: 50%;
+    width: 20%;
+    height: 100%;
+    cursor: pointer;
+  }
+  
+  .card.flipped {
+    transform: translateX(-50%) rotateY(180deg);
+  }
+  
+/* 기본 이미지 스타일 */
 .image {
-  max-width: 100%;
+  width: 100%;
   height: auto;
 }
 
-
-@keyframes flyIn {
-  from {
-    transform: translate(-1000px, -700px);
-
-  }
-  to {
-    transform: translate(0, 0);
+/* 화면 크기에 따른 이미지 크기 조정 */
+/* @media (max-width: 1180px) {
+  .card {
+    width: 10%;
   }
 }
 
-/* 화면 너비가 600px 이하일 때 이미지 크기 조정 */
-@media (max-width: 600px) {
-  .image {
-    max-width: 80%; /* 이미지가 부모 요소의 80% 너비를 가지도록 설정합니다. */
+@media (max-width: 480px) {
+  .card {
+    width: 10%;
   }
-}
+} */
+  
+
+  @keyframes slideInCard1 {
+    0% {
+      top: -300px;
+        }
+    100% {
+      top: 50%;
+      left: 11%;
+      transform: rotateZ(-10deg);
+    }
+  }
+  
+  @keyframes slideInCard2 {
+    0% {
+      top: -300px;
+    }
+    100% {
+      top: 30%;
+      left: 23%;
+      transform: rotateZ(-5deg);
+    }
+  }
+  @keyframes slideInCard3 {
+    0% {
+      top: -300px;    }
+    100% {
+      top: 55%;
+      left: 34%;
+      transform: rotateZ(3deg);
+    }
+  }
+  
+  @keyframes slideInCard4 {
+    0% {
+      top: -300px;    }
+    100% {
+      top: 20%;
+      left: 45%;
+      transform: rotateZ(-10deg);
+    }
+  }
+  @keyframes slideInCard5 {
+    0% {
+      top: -300px;    }
+    100% {
+      top: 7%;
+      left: 60%;
+      transform: rotateZ(3deg);
+    }
+  }
+  
+  @keyframes slideInCard6 {
+    0% {
+      top: -300px;    }
+    100% {
+      top: 80%;
+      left: 70%;
+      transform: rotateZ(-4deg);
+    }
+  }
+  
+  .animateCard1 {
+    animation: slideInCard1 1s ease forwards;
+  }
+  
+  .animateCard2 {
+    animation: slideInCard2 1s ease forwards;
+  }
+  .animateCard3 {
+    animation: slideInCard3 1s ease forwards;
+  }
+  
+  .animateCard4 {
+    animation: slideInCard4 1s ease forwards;
+  }
+  .animateCard5 {
+    animation: slideInCard5 1s ease forwards;
+  }
+  
+  .animateCard6 {
+    animation: slideInCard6 1s ease forwards;
+  }
+
+  
+ 
