@@ -5,7 +5,7 @@ import styles from './page.module.css';
 const CardGallery = () => {
   const cardImages = [
     { src: '/10.png', width: 2480, height: 3508 },
-    { src: '/cardk.jpg', width: 2480, height: 3508 },
+    { src: '/cardk.png', width: 2480, height: 3508 },
     {src: '/queen.png', width: 2480, height: 3508 },
     { src: '/jack.png', width: 2480, height: 3508 },
     { src: '/back.png', width: 2480, height: 3508 },
