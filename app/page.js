@@ -1,27 +1,29 @@
 'use client';
 import { useState, useEffect } from 'react';
 import styles from './page.module.css';
+import cardFlipSound from '../public/cardSlide8.mp3';
 
 const CardGallery = () => {
   const cardImages = [
     { src: '/10.png', width: 2480, height: 3508 },
     { src: '/kspade.png', width: 2480, height: 3508 },
-    {src: '/queen.png', width: 2480, height: 3508 },
+    { src: '/queen.png', width: 2480, height: 3508 },
     { src: '/jack.png', width: 2480, height: 3508 },
     { src: '/back.png', width: 2480, height: 3508 },
-    { src: '/back.png', width: 2480, height: 3508}
+    { src: '/back.png', width: 2480, height: 3508 }
   ];
 
   const [cards, setCards] = useState([]);
   const [isFlipped, setIsFlipped] = useState(Array(cardImages.length).fill(false));
   const [isDisabled, setIsDisabled] = useState(false);
   const [animationCompleted, setAnimationCompleted] = useState(false);
+  const [isAnimationStarted, setIsAnimationStarted] = useState(false);
 
   useEffect(() => {
     setCards(
       cardImages.map((card, index) => ({
         ...card,
-        animationClass: `animateCard${index + 1}`, // 각 카드에 대한 애니메이션 클래스 이름 생성
+        animationClass: `animateCard${index + 1}`,
       }))
     );
   }, []);
@@ -36,6 +38,7 @@ const CardGallery = () => {
         }
         return newFlipped;
       });
+      playcardflipsound();
     }
   };
 
@@ -43,13 +46,13 @@ const CardGallery = () => {
     if (index >= 4 && index <= 5) {
       flipCard(index);
       setIsDisabled(true);
-  
-      // 마지막 두 장의 카드를 클릭하면 kheart1.jpg로 변경
+
       setCards((prevCards) => {
         const newCards = [...prevCards];
         newCards[index].src = '/joker.png';
         return newCards;
       });
+
     }
   };
 
@@ -66,14 +69,38 @@ const CardGallery = () => {
   };
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setAnimationCompleted(true);
-    }, 3000);
+    if (isAnimationStarted) {
+      const timer = setTimeout(() => {
+        setAnimationCompleted(true);
+      }, );
 
-    return () => {
-      clearTimeout(timer);
-    };
-  }, []);
+      return () => {
+        clearTimeout(timer);
+      };
+    }
+  }, [isAnimationStarted]);
+
+  const playcardflipsound = () => {
+    const audio = new Audio(cardFlipSound);
+    audio.play();
+  };
+
+  useEffect(() => {
+    if (animationCompleted) {
+      cards.slice(0, 6).forEach((_, index) => {
+        const timer = setTimeout(() => {
+          playcardflipsound();
+        }, index * 150);
+        return () => {
+          clearTimeout(timer);
+        };
+      });
+    }
+  }, [animationCompleted]);
+
+  const startAnimation = () => {
+    setIsAnimationStarted(true);
+  };
 
   return (
     <div className={styles.gallery}>
@@ -86,7 +113,7 @@ const CardGallery = () => {
               animationDelay: `${index * 0.15}s`,
               left: '50%',
               transform: 'translateX(-50%)',
-              animationPlayState: animationCompleted ? 'running' : 'paused', // 애니메이션 시작 상태를 조절
+              animationPlayState: animationCompleted ? 'running' : 'paused',
             }}
             onClick={() => handleCardClick(index)}
             onAnimationEnd={onAnimationEnd}
@@ -95,33 +122,34 @@ const CardGallery = () => {
               className={styles.image}
               src={card.src}
               alt={`Card ${index}`}
-              style={{ objectFit: 'contain', width: '100%', height: '100%' }} // 이미지를 반응형으로 조정
+              style={{ objectFit: 'contain', width: '100%', height: '100%' }}
             />
           </div>
         ))}
 
         {cards.slice(4, 6).map((card, index) => (
           <div
-            key={index + 4} // 충돌을 피하기 위해 4를 오프셋으로 추가
+            key={index + 4}
             className={`${styles.card} ${isFlipped[index + 4] ? styles.flipped : ''} ${styles[card.animationClass]}`}
             style={{
-              animationDelay: `${(index + 4) * 0.15}s`, // 4를 인덱스에 오프셋으로 추가
+              animationDelay: `${(index + 4) * 0.15}s`,
               left: '50%',
               transform: 'translateX(-50%)',
-              animationPlayState: animationCompleted ? 'running' : 'paused', // 애니메이션 시작 상태를 조절
+              animationPlayState: animationCompleted ? 'running' : 'paused',
             }}
-            onClick={() => handleCardClick(index + 4)} // 4를 인덱스에 오프셋으로 추가
+            onClick={() => handleCardClick(index + 4)}
             onAnimationEnd={onAnimationEnd}
           >
             <img
               className={styles.image}
-              src={isFlipped[index + 4] ? card.src : '/back.png'} // 4를 인덱스에 오프셋으로 추가
-              alt={`Card ${index + 4}`} // 4를 인덱스에 오프셋으로 추가
-              style={{ objectFit: 'contain', width: '100%', height: '100%' }} // 이미지를 반응형으로 조정
+              src={isFlipped[index + 4] ? card.src : '/back.png'}
+              alt={`Card ${index + 4}`}
+              style={{ objectFit: 'contain', width: '100%', height: '100%' }}
             />
           </div>
         ))}
       </div>
+      <button onClick={startAnimation}>start</button>
     </div>
   );
 };
